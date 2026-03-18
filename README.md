@@ -1,179 +1,252 @@
-# PixTrove
+<div align="center">
 
-PixTrove is a web application designed to automate the organization of event photos by recognizing participants' faces. It features a Next.js frontend for user interaction and a Flask backend for image processing and face recognition.
+<br/>
 
-## Key Features  
-- **Face Recognition**: Identifies faces in event photos using a reference image.  
-- **Automated Organization**: Creates folders named after participants and sorts their photos into respective folders.  
-- **Manual Review**: Unmatched photos remain in the upload area, implicitly requiring manual review and categorization.
-- **Efficient Workflow**: Saves time by eliminating the need for manual photo sorting.  
+<img src="https://capsule-render.vercel.app/api?type=waving&color=0:0f0f0f,100:c8441a&height=200&section=header&text=PixTrove&fontSize=80&fontColor=ffffff&fontAlignY=38&desc=AI-Powered%20Event%20Photo%20Organizer&descAlignY=58&descColor=ffffff&descSize=18&animation=fadeIn" width="100%"/>
 
-## How It Works  
-1. **Prepare Reference Photos**:
-   - Reference photos of participants are manually added to the `./reference_photos` directory. Each photo should ideally clearly show the face of an individual and be named in a way that identifies them (e.g., `JohnDoe.jpg`). This name will be used for the output folder.
+</div>
 
-2. **Upload Event Photos**:
-   - Users navigate to the 'Organize' or 'Add Event' section of the web application.
-   - Event photos are uploaded through the drag-and-drop interface. These photos are temporarily stored in the `./uploads` directory on the server.
+<br/>
 
-3. **Automated Photo Processing & Organization**:
-   - The Flask backend processes each uploaded photo from the `./uploads` directory.
-   - It uses the `face_recognition` library to detect faces in the event photos and compare them against the faces in the `reference_photos` directory.
-   - If a match is found, the event photo is moved to a subfolder within `./organised_photos` named after the corresponding reference photo's filename (e.g., `./organised_photos/JohnDoe/`).
+<div align="center">
 
-4. **Access Organized Photos**:
-   - Organized photos can be accessed directly from the `./organised_photos` directory on the server.
+```
+  upload 500 photos  →  walk away  →  come back to sorted folders
+```
 
-## Tech Stack
+</div>
 
-### Backend
-- **Programming Language**: Python
-- **Framework**: Flask
-- **Face Recognition**: `face_recognition` (utilizes Dlib)
-- **Image Processing**: OpenCV (cv2)
+<br/>
 
-### Frontend
-- **Framework**: Next.js (React)
-- **Styling**: Tailwind CSS
+<div align="center">
 
-### Storage
-- **Photo Storage**: Local file system (for reference photos, uploaded event photos, and organized photos)
+![Python](https://img.shields.io/badge/-Python%203.8+-black?style=flat-square&logo=python&logoColor=white)
+![Flask](https://img.shields.io/badge/-Flask-black?style=flat-square&logo=flask&logoColor=white)
+![Next.js](https://img.shields.io/badge/-Next.js-black?style=flat-square&logo=next.js&logoColor=white)
+![OpenCV](https://img.shields.io/badge/-OpenCV-black?style=flat-square&logo=opencv&logoColor=white)
+![Tailwind](https://img.shields.io/badge/-Tailwind-black?style=flat-square&logo=tailwindcss&logoColor=white)
+![MIT](https://img.shields.io/badge/-MIT%20License-black?style=flat-square)
 
-## Installation and Setup
+</div>
 
-Follow these steps to set up and run PixTrove locally:
+---
 
-### Prerequisites
-- Python (3.8 or newer recommended)
-- Node.js and npm (LTS version recommended)
-- Git
+<br/>
 
-### 1. Clone the Repository
+## `$ what_is_this`
+
+> You shot 600 photos at a college fest. Now someone asks *"can you send me just the ones with Priya?"*  
+> Without PixTrove: 2 hours of squinting at thumbnails.  
+> With PixTrove: 8 seconds.
+
+PixTrove uses a **Flask backend + face_recognition (Dlib)** to scan every photo, match faces against reference headshots, and drop each photo into a named folder automatically. Unmatched photos stay in the upload area for a quick manual pass.
+
+<br/>
+
+---
+
+## `$ how_it_works`
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│                                                                     │
+│   📂 reference_photos/          📸 Event Gallery (bulk upload)     │
+│      John_Doe.jpg   ──────┐         500 photos from the fest       │
+│      Jane_Smith.png ──────┤                    │                    │
+│      Rahul_K.jpg    ──────┤                    │                    │
+│                           ▼                    ▼                    │
+│                   ┌───────────────────────────────┐                 │
+│                   │        Flask Backend           │                 │
+│                   │   face_recognition + OpenCV    │                 │
+│                   │   detect → encode → compare    │                 │
+│                   └──────────────┬────────────────┘                 │
+│                                  │                                  │
+│              ┌───────────────────┼──────────────────┐               │
+│              ▼                   ▼                  ▼               │
+│       ✅ match found       ✅ match found      ❌ no match          │
+│   organised_photos/    organised_photos/      stays in              │
+│      John_Doe/            Jane_Smith/          uploads/             │
+│                                               (manual review)       │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+<br/>
+
+---
+
+## `$ tech_stack`
+
+<br/>
+
+<table>
+<tr>
+<td valign="top" width="50%">
+
+**`// backend`**
+```python
+framework  = "Flask"
+ai_engine  = "face_recognition"
+under_hood = "Dlib"
+vision     = "OpenCV (cv2)"
+language   = "Python 3.8+"
+```
+
+</td>
+<td valign="top" width="50%">
+
+**`// frontend`**
+```javascript
+framework = "Next.js (React)"
+styling   = "Tailwind CSS"
+upload_ui = "Drag & Drop"
+port      = 3000
+```
+
+</td>
+</tr>
+</table>
+
+<br/>
+
+---
+
+## `$ install`
+
+**Prerequisites** → `Python 3.8+` &nbsp; `Node.js LTS` &nbsp; `Git`
+
+<br/>
+
+**Step 1 — Clone**
 ```bash
 git clone <repository_url>
-cd <repository_directory_name>
+cd PixTrove
 ```
-(Replace `<repository_url>` with the actual URL and `<repository_directory_name>` with the folder name, e.g., `Event-Photo-Organizer-with-Face-Recognition`)
 
-### 2. Backend Setup (Flask)
-Navigate to the project root directory if you aren't already there.
+**Step 2 — Backend**
+```bash
+python -m venv env
+source env/bin/activate        # Windows: .\env\Scripts\activate
 
-a. **Create and Activate a Virtual Environment** (recommended):
-   ```bash
-   python -m venv env
-   # On Windows
-   .\env\Scripts\activate
-   # On macOS/Linux
-   source env/bin/activate
-   ```
+pip install -r requirements.txt
+```
 
-b. **Install Python Dependencies**:
-   ```bash
-   pip install -r requirements.txt
-   ```
-   *Note: The `requirements.txt` file is encoded in UTF-16 LE. If you encounter issues, you might need to convert it to UTF-8 first. One way to do this is to open it in a text editor like VS Code or Notepad++ and save it with UTF-8 encoding.*
+> ⚠️ If `requirements.txt` shows encoding errors — open it in VS Code → Save with Encoding → UTF-8
 
-### 3. Frontend Setup (Next.js)
-Navigate to the project root directory (if not already there, though typically the Next.js app is at the root alongside `app.py`).
+**Step 3 — Frontend**
+```bash
+npm install
+```
 
-a. **Install Node.js Dependencies**:
-   ```bash
-   npm install
-   ```
+**Step 4 — Directories** *(auto-created by Flask on startup, but you can do it manually)*
+```bash
+mkdir reference_photos uploads organised_photos
+```
 
-### 4. Prepare Directories
-Ensure the following directories exist in the project root, or create them if they don't:
-- `./reference_photos`: Place your reference images here.
-- `./uploads`: This will be used for temporary storage of uploaded event photos.
-- `./organised_photos`: Matched photos will be saved here.
-*The Flask application (`app.py`) attempts to create these directories automatically if they are missing.*
+**Step 5 — Run** *(two terminals)*
 
-### 5. Running the Application
+| Terminal | Command | URL |
+|---|---|---|
+| A — Backend  | `python app.py` | `http://127.0.0.1:5000` |
+| B — Frontend | `npm run dev`   | `http://localhost:3000`  |
 
-a. **Run the Backend (Flask)**:
-   Open a terminal, activate your Python virtual environment, and run:
-   ```bash
-   python app.py
-   ```
-   The Flask development server will typically start on `http://127.0.0.1:5000/`.
+<br/>
 
-b. **Run the Frontend (Next.js)**:
-   Open another terminal and run:
-   ```bash
-   npm run dev
-   ```
-   The Next.js development server will typically start on `http://localhost:3000/`.
+---
 
-c. **Access PixTrove**:
-   Open your web browser and navigate to `http://localhost:3000`.
+## `$ api_reference`
 
-## API Endpoints (Flask Backend)
+<br/>
 
-The Flask backend (`app.py`) provides the following API endpoints:
+**`POST /upload`** — Upload a photo for face recognition
 
-### `POST /upload`
-- **Purpose**: Handles the upload of event photos for processing.
-- **Method**: `POST`
-- **Request**: Expects a multipart/form-data request with a file part named `file`.
-  - The file should be an image with an allowed extension (`png`, `jpg`, `jpeg`).
-- **Response**:
-  - **Success (match found)**: JSON object with `message` (e.g., "File moved to <organized_directory>"), `matched_with` (filename of the reference photo), and `preview_url`.
-    ```json
-    {
-      "message": "File moved to organised_photos/JohnDoe",
-      "matched_with": "JohnDoe.jpg",
-      "preview_url": "/preview/JohnDoe.jpg"
-    }
-    ```
-  - **Success (no match found)**: JSON object with `message`: `"No matching faces found."`
-  - **Success (no face in uploaded image)**: JSON object with `message`: `"No faces found in the uploaded image."`
-  - **Error**: JSON object with `error` message (e.g., "No file part", "No selected file", "Invalid file type", or other processing errors) and a corresponding HTTP status code (e.g., 400).
-    ```json
-    {
-      "error": "No file part"
-    }
-    ```
+```
+Request  →  multipart/form-data  { file: image.jpg }
+```
 
-### `GET /preview/<filename>`
-- **Purpose**: Serves a reference image file. This is used by the `/upload` endpoint's response to provide a direct link to the matched reference image, but can also be accessed directly.
-- **Method**: `GET`
-- **URL Parameter**: `filename` - The name of the reference image file located in the `reference_photos` directory.
-- **Response**:
-  - **Success**: The image file.
-  - **Error (image not found)**: JSON object `{"error": "Image not found"}` with HTTP status code 404.
+```jsonc
+// ✅ Face matched
+{
+  "message":      "File moved to organised_photos/JohnDoe",
+  "matched_with": "JohnDoe.jpg",
+  "preview_url":  "/preview/JohnDoe.jpg"
+}
 
-## Usage
+// ℹ️ No match
+{ "message": "No matching faces found." }
 
-Once the backend and frontend servers are running (see "Installation and Setup"), you can use PixTrove as follows:
+// ℹ️ No face in image
+{ "message": "No faces found in the uploaded image." }
 
-1.  **Prepare Reference Photos**:
-    *   Create a directory named `reference_photos` in the root of the project (if it doesn't exist).
-    *   Add clear headshot photos of individuals you want the system to recognize into this `reference_photos` directory.
-    *   Name the files descriptively, as these names will be used for the organized folders (e.g., `John_Doe.jpg`, `Jane_Smith.png`).
+// ❌ Bad request
+{ "error": "Invalid file type" }   // HTTP 400
+```
 
-2.  **Access the Web Application**:
-    *   Open your web browser and go to the frontend URL (typically `http://localhost:3000`).
+<br/>
 
-3.  **Upload Event Photos**:
-    *   Navigate to the "Organize" or "Add Event" page using the navigation links (e.g., "Let's Organise", "Get Started", or "Add Event" in the navbar).
-    *   On this page, you will find a drag-and-drop area. Drag your event photos into this area, or click it to open a file dialog and select your photos.
-    *   Click the "Upload" button to send the photos to the backend for processing.
-    *   *(Note: As of the last review, the client-side JavaScript to trigger the upload from the 'Upload' button in `app/components/Previews.js` to the backend `/upload` endpoint was not fully implemented. This documentation describes the intended workflow.)*
+**`GET /preview/<filename>`** — Fetch a reference image
 
-4.  **Processing**:
-    *   The Flask backend will process the uploaded photos. It will attempt to detect faces in them and compare these faces with the ones in your `reference_photos` directory.
-    *   Uploaded photos are temporarily stored in the `uploads` directory during processing.
+```
+/preview/John_Doe.jpg   →  returns the image file
+/preview/nobody.jpg     →  { "error": "Image not found" }  // 404
+```
 
-5.  **Find Organized Photos**:
-    *   If a match is found, the corresponding event photo will be moved from the `uploads` directory to a subdirectory within `organised_photos`.
-    *   The subdirectory will be named after the matched reference photo (e.g., if an event photo matches `reference_photos/John_Doe.jpg`, it will be moved to `organised_photos/John_Doe/`).
-    *   You can access these organized photos directly from the `organised_photos` folder in your project directory.
-    *   If no match is found, or no faces are detected in an uploaded photo, it might remain in the `uploads` directory or be handled as per the messages returned by the API (e.g., "No matching faces found," "No faces found in the uploaded image").
+<br/>
 
-6.  **Manual Review (Implied)**:
-    *   The current `README.md` mentions "Flags unmatched faces for manual categorization." While the backend logic in `app.py` doesn't explicitly create a 'manual review' folder, photos that are not matched or cause errors would implicitly require manual review by checking the `uploads` folder or API responses.
+---
 
-## Contributing
-Contributions are welcome! Please fork this repository, make your changes, and submit a pull request.
+## `$ file_tree`
 
+```
+PixTrove/
+│
+├── app.py                 ← Flask backend (face recognition + API)
+├── requirements.txt       ← Python dependencies
+│
+├── reference_photos/      ← 👤 PUT HEADSHOTS HERE (name = folder name)
+│   ├── John_Doe.jpg
+│   └── Jane_Smith.png
+│
+├── uploads/               ← 📥 temp store (auto-cleared after matching)
+│
+├── organised_photos/      ← 📂 final sorted output
+│   ├── John_Doe/
+│   │   ├── event_photo_003.jpg
+│   │   └── event_photo_071.jpg
+│   └── Jane_Smith/
+│       └── event_photo_019.jpg
+│
+└── app/                   ← Next.js frontend
+    ├── components/
+    │   └── Previews.js    ← drag-and-drop upload UI
+    └── pages/
+```
 
+<br/>
+
+---
+
+## `$ contributing`
+
+```bash
+git checkout -b feature/your-idea
+# make changes
+git commit -m "feat: your idea"
+git push origin feature/your-idea
+# open a pull request
+```
+
+PRs are welcome. If you find a bug or want to add a feature, open an issue first so we can discuss it.
+
+<br/>
+
+---
+
+<div align="center">
+
+<img src="https://capsule-render.vercel.app/api?type=waving&color=0:c8441a,100:0f0f0f&height=120&section=footer" width="100%"/>
+
+**Built with Python, obsession, and a lot of test photos.**
+
+`face_recognition` · `OpenCV` · `Flask` · `Next.js` · `Tailwind CSS`
+
+</div>
